@@ -2,32 +2,40 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oven — Black & White Clicker</title>
+    <title>Oven Coin</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>OVEN</h1>
+        <h1>OVEN COIN</h1>
+        
         <div class="stats">
-            <p>Cookies: <span id="cookies">0</span></p>
-            <p>Per second: <span id="cps">0</span></p>
+            <p>Монеты: <span id="coins">0</span></p>
+            <p>В секунду: <span id="cps">0</span></p>
         </div>
         
-        <button id="oven-button">CLICK TO BAKE</button>
+        <!-- SVG монетка -->
+        <svg id="coin" width="150" height="150" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="#fff" stroke="#000" stroke-width="3"/>
+            <text x="50" y="55" text-anchor="middle" font-weight="bold" font-family="Arial" font-size="14">OVEN</text>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="5,3"/>
+        </svg>
+        
+        <div id="floating-texts"></div>
         
         <div class="upgrades">
-            <h2>Upgrades</h2>
-            <button class="upgrade" data-cost="10" data-cps="1">Oven Mitts (+1/s)</button>
-            <button class="upgrade" data-cost="50" data-cps="2">Baker (+2/s)</button>
-            <button class="upgrade" data-cost="100" data-cps="5">Factory (+5/s)</button>
+            <h2>Улучшения</h2>
+            <button class="upgrade" data-cost="10" data-cps="1">Молоток (+1/сек)</button>
+            <button class="upgrade" data-cost="50" data-cps="3">Станок (+3/сек)</button>
+            <button class="upgrade" data-cost="200" data-cps="10">Фабрика (+10/сек)</button>
+            <button class="upgrade" data-cost="1000" data-cps="50">Банк (+50/сек)</button>
         </div>
         
         <div class="referral">
-            <h2>Invite Friends</h2>
-            <p>Your referral link: <code id="ref-link">loading...</code></p>
-            <p>Invited: <span id="ref-count">0</span> friends</p>
+            <h2>Пригласить друзей</h2>
+            <p>Ваша ссылка: <code id="ref-link">loading...</code></p>
+            <p>Приглашено: <span id="ref-count">0</span></p>
         </div>
     </div>
     

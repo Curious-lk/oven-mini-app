@@ -1,29 +1,28 @@
-// Данные игры
-let cookies = 0;
-let cookiesPerSecond = 0;
+// Игровые данные
+let coins = 0;
+let coinsPerSecond = 0;
 let refCount = 0;
 
-// Элементы интерфейса
-const ovenButton = document.getElementById("oven-button");
-const cookiesDisplay = document.getElementById("cookies");
+// Элементы
+const coin = document.getElementById("coin");
+const coinsDisplay = document.getElementById("coins");
 const cpsDisplay = document.getElementById("cps");
-const refLink = document.getElementById("ref-link");
-const refCountDisplay = document.getElementById("ref-count");
+const floatingTexts = document.getElementById("floating-texts");
 
-// Инициализация Telegram WebApp
+// Telegram WebApp
 const tg = window.Telegram?.WebApp;
 if (tg) {
-    tg.expand(); // Развернуть на весь экран
-    tg.MainButton.setText("Share Oven");
+    tg.expand();
+    tg.MainButton.setText("Пригласить друга");
     tg.MainButton.show();
     tg.MainButton.onClick(() => {
-        tg.sendData(`🔥 I'm baking cookies in Oven! Join me: ${generateRefLink()}`);
+        tg.sendData(`Присоединяйся к Oven Coin! ${generateRefLink()}`);
     });
     
     // Проверка рефералки
     const initData = tg.initDataUnsafe;
     if (initData?.start_param) {
-        refCount = localStorage.getItem("refCount") || 0;
+        refCount = parseInt(localStorage.getItem("refCount")) || 0;
         refCount++;
         localStorage.setItem("refCount", refCount);
     }
@@ -32,32 +31,54 @@ if (tg) {
 // Генерация реферальной ссылки
 function generateRefLink() {
     const botName = "your_bot_name"; // Замените на имя бота
-    return `https://t.me/${botName}?start=ref_${tg.initDataUnsafe.user?.id || "0"}`;
+    return `https://t.me/${botName}?start=ref_${tg?.initDataUnsafe?.user?.id || "0"}`;
 }
 
-// Обновление рефералки
-if (tg?.initDataUnsafe?.user) {
-    refLink.textContent = generateRefLink();
-    refCountDisplay.textContent = localStorage.getItem("refCount") || 0;
+// Обновление UI
+function updateUI() {
+    coinsDisplay.textContent = coins;
+    cpsDisplay.textContent = coinsPerSecond;
+    localStorage.setItem("coins", coins);
+    localStorage.setItem("cps", coinsPerSecond);
+    
+    if (tg?.initDataUnsafe?.user) {
+        document.getElementById("ref-link").textContent = generateRefLink();
+        document.getElementById("ref-count").textContent = localStorage.getItem("refCount") || 0;
+    }
 }
 
-// Клик по печи
-ovenButton.addEventListener("click", () => {
-    cookies++;
+// Клик по монетке
+coin.addEventListener("click", (e) => {
+    coins++;
     updateUI();
+    
+    // Анимация
+    coin.style.transform = "scale(0.95)";
+    setTimeout(() => coin.style.transform = "scale(1)", 100);
+    
+    // Всплывающий текст
+    const rect = coin.getBoundingClientRect();
+    const text = document.createElement("div");
+    text.className = "floating-text";
+    text.textContent = "+1";
+    text.style.left = `${e.clientX - rect.left}px`;
+    text.style.top = `${e.clientY - rect.top}px`;
+    floatingTexts.appendChild(text);
+    
+    setTimeout(() => text.remove(), 1000);
 });
 
-// Покупка улучшений
-document.querySelectorAll(".upgrade").forEach(button => {
-    button.addEventListener("click", () => {
-        const cost = parseInt(button.getAttribute("data-cost"));
-        const cps = parseInt(button.getAttribute("data-cps"));
+// Улучшения
+document.querySelectorAll(".upgrade").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const cost = parseInt(btn.dataset.cost);
+        const cps = parseInt(btn.dataset.cps);
         
-        if (cookies >= cost) {
-            cookies -= cost;
-            cookiesPerSecond += cps;
-            button.style.opacity = "0.5";
-            button.disabled = true;
+        if (coins >= cost) {
+            coins -= cost;
+            coinsPerSecond += cps;
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
             updateUI();
         }
     });
@@ -65,21 +86,15 @@ document.querySelectorAll(".upgrade").forEach(button => {
 
 // Автоматический доход
 setInterval(() => {
-    cookies += cookiesPerSecond;
-    updateUI();
+    if (coinsPerSecond > 0) {
+        coins += coinsPerSecond;
+        updateUI();
+    }
 }, 1000);
 
-// Обновление интерфейса
-function updateUI() {
-    cookiesDisplay.textContent = cookies;
-    cpsDisplay.textContent = cookiesPerSecond;
-    localStorage.setItem("cookies", cookies);
-    localStorage.setItem("cps", cookiesPerSecond);
-}
-
 // Загрузка сохранений
-if (localStorage.getItem("cookies")) {
-    cookies = parseInt(localStorage.getItem("cookies"));
-    cookiesPerSecond = parseInt(localStorage.getItem("cps"));
+if (localStorage.getItem("coins")) {
+    coins = parseInt(localStorage.getItem("coins"));
+    coinsPerSecond = parseInt(localStorage.getItem("cps"));
     updateUI();
 }

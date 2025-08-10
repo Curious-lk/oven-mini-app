@@ -13,40 +13,57 @@ body {
 }
 
 h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+    font-size: 2rem;
+    margin-bottom: 10px;
     text-transform: uppercase;
+    letter-spacing: 3px;
 }
 
-#oven-button {
-    background: #fff;
-    color: #000;
-    border: 2px solid #fff;
-    font-size: 1.5rem;
-    padding: 15px 30px;
+#coin {
     cursor: pointer;
-    margin: 20px 0;
-    transition: 0.3s;
+    margin: 20px auto;
+    transition: transform 0.1s;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
 }
 
-#oven-button:hover {
-    background: #000;
+#coin:active {
+    transform: scale(0.95);
+}
+
+.stats {
+    margin: 15px 0;
+    font-size: 1.2rem;
+}
+
+.floating-text {
+    position: absolute;
     color: #fff;
+    font-weight: bold;
+    animation: float-up 1s ease-out;
+    pointer-events: none;
+    text-shadow: 0 0 3px #000;
+}
+
+@keyframes float-up {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-50px); opacity: 0; }
 }
 
 .upgrades {
     margin-top: 20px;
     border-top: 1px solid #fff;
-    padding-top: 10px;
+    padding-top: 15px;
 }
 
 .upgrade {
     background: #000;
     color: #fff;
-    border: 1px solid #fff;
+    border: 2px solid #fff;
     padding: 8px 12px;
     margin: 5px;
     cursor: pointer;
+    font-family: 'Courier New';
+    transition: all 0.3s;
 }
 
 .upgrade:hover {
@@ -54,13 +71,19 @@ h1 {
     color: #000;
 }
 
+.upgrade:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .referral {
     margin-top: 20px;
     border-top: 1px solid #fff;
-    padding-top: 10px;
+    padding-top: 15px;
 }
 
 code {
-    background: #333;
+    background: #222;
     padding: 2px 5px;
+    border-radius: 3px;
 }
