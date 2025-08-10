@@ -1,0 +1,89 @@
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+#coin {
+    cursor: pointer;
+    margin: 20px auto;
+    transition: transform 0.1s;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
+}
+
+#coin:active {
+    transform: scale(0.95);
+}
+
+.stats {
+    margin: 15px 0;
+    font-size: 1.2rem;
+}
+
+.floating-text {
+    position: absolute;
+    color: #fff;
+    font-weight: bold;
+    animation: float-up 1s ease-out;
+    pointer-events: none;
+    text-shadow: 0 0 3px #000;
+}
+
+@keyframes float-up {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-50px); opacity: 0; }
+}
+
+.upgrades {
+    margin-top: 20px;
+    border-top: 1px solid #fff;
+    padding-top: 15px;
+}
+
+.upgrade {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 8px 12px;
+    margin: 5px;
+    cursor: pointer;
+    font-family: 'Courier New';
+    transition: all 0.3s;
+}
+
+.upgrade:hover {
+    background: #fff;
+    color: #000;
+}
+
+.upgrade:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.referral {
+    margin-top: 20px;
+    border-top: 1px solid #fff;
+    padding-top: 15px;
+}
+
+code {
+    background: #222;
+    padding: 2px 5px;
+    border-radius: 3px;
+}

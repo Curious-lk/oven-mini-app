@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Oven Coin</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>OVEN COIN</h1>
+        
+        <div class="stats">
+            <p>Монеты: <span id="coins">0</span></p>
+            <p>В секунду: <span id="cps">0</span></p>
+        </div>
+        
+        <!-- SVG монетка -->
+        <svg id="coin" width="150" height="150" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="#fff" stroke="#000" stroke-width="3"/>
+            <text x="50" y="55" text-anchor="middle" font-weight="bold" font-family="Arial" font-size="14">OVEN</text>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="5,3"/>
+        </svg>
+        
+        <div id="floating-texts"></div>
+        
+        <div class="upgrades">
+            <h2>Улучшения</h2>
+            <button class="upgrade" data-cost="10" data-cps="1">Молоток (+1/сек)</button>
+            <button class="upgrade" data-cost="50" data-cps="3">Станок (+3/сек)</button>
+            <button class="upgrade" data-cost="200" data-cps="10">Фабрика (+10/сек)</button>
+            <button class="upgrade" data-cost="1000" data-cps="50">Банк (+50/сек)</button>
+        </div>
+        
+        <div class="referral">
+            <h2>Пригласить друзей</h2>
+            <p>Ваша ссылка: <code id="ref-link">loading...</code></p>
+            <p>Приглашено: <span id="ref-count">0</span></p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
