@@ -1,0 +1,66 @@
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+#oven-button {
+    background: #fff;
+    color: #000;
+    border: 2px solid #fff;
+    font-size: 1.5rem;
+    padding: 15px 30px;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: 0.3s;
+}
+
+#oven-button:hover {
+    background: #000;
+    color: #fff;
+}
+
+.upgrades {
+    margin-top: 20px;
+    border-top: 1px solid #fff;
+    padding-top: 10px;
+}
+
+.upgrade {
+    background: #000;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 8px 12px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.upgrade:hover {
+    background: #fff;
+    color: #000;
+}
+
+.referral {
+    margin-top: 20px;
+    border-top: 1px solid #fff;
+    padding-top: 10px;
+}
+
+code {
+    background: #333;
+    padding: 2px 5px;
+}
