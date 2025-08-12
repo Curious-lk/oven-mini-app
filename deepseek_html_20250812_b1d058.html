@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OVN Clicker</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --tg-theme-bg-color: #17212b;
+            --tg-theme-text-color: #f5f5f5;
+            --tg-theme-button-color: #5288c1;
+            --tg-theme-secondary-bg-color: #232e3c;
+        }
+        
+        body {
+            background: var(--tg-theme-bg-color);
+            color: var(--tg-theme-text-color);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            background: var(--tg-theme-secondary-bg-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .tab.active {
+            background: var(--tg-theme-button-color);
+        }
+        
+        .card {
+            background: var(--tg-theme-secondary-bg-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .clicker-area {
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        .click-btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        
+        .coming-soon {
+            position: relative;
+            text-align: center;
+            padding: 50px 0;
+            border-radius: 12px;
+            background: rgba(35, 46, 60, 0.7);
+        }
+        
+        .coming-soon::after {
+            content: "СКОРО";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--tg-theme-button-color);
+            opacity: 0.8;
+        }
+        
+        .balance {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .ref-link {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px;
+            word-break: break-all;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        
+        .copy-btn {
+            background: var(--tg-theme-button-color);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            padding: 8px 15px;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .rating-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="balance">
+            <div>Ваш баланс:</div>
+            <div id="balance">0.000 OVN</div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="openTab('clicker')">Кликер</div>
+            <div class="tab" onclick="openTab('rating')">Рейтинг</div>
+            <div class="tab" onclick="openTab('wallet')">Кошелек</div>
+            <div class="tab" onclick="openTab('converter')">Конвертер</div>
+            <div class="tab" onclick="openTab('tracker')">Трекер</div>
+        </div>
+        
+        <div id="clicker" class="tab-content active">
+            <div class="card">
+                <div class="clicker-area">
+                    <button class="click-btn" onclick="clickOVN()">КЛИКНИ!</button>
+                    <p>1 клик = 0.001 OVN</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Реферальная система</h3>
+                <p>Приглашайте друзей и получайте 0.1 OVN за каждого активного реферала</p>
+                <div class="ref-link" id="refLink">https://t.me/your_bot?start=ref_123456</div>
+                <button class="copy-btn" onclick="copyRefLink()">Скопировать ссылку</button>
+            </div>
+        </div>
+        
+        <div id="rating" class="tab-content">
+            <div class="card">
+                <h3>Топ по рефералам</h3>
+                <div id="refRating"></div>
+            </div>
+            <div class="card">
+                <h3>Топ по OVN</h3>
+                <div id="ovnRating"></div>
+            </div>
+        </div>
+        
+        <div id="wallet" class="tab-content">
+            <div class="card">
+                <h3>Ваши активы</h3>
+                <div class="balance">0.000 OVN</div>
+                <div class="balance">0.000 MEM</div>
+            </div>
+            
+            <div class="card">
+                <h3>Реферальная статистика</h3>
+                <div class="rating-item">
+                    <span>Всего рефералов:</span>
+                    <span id="totalRefs">0</span>
+                </div>
+                <div class="rating-item">
+                    <span>Активные рефералы:</span>
+                    <span id="activeRefs">0</span>
+                </div>
+                <div class="rating-item">
+                    <span>Заработано с рефералов:</span>
+                    <span id="earnedRefs">0.000 OVN</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="converter" class="tab-content">
+            <div class="card coming-soon">
+                <!-- Будет конвертер OVN → MEM -->
+            </div>
+        </div>
+        
+        <div id="tracker" class="tab-content">
+            <div class="card">
+                <h3>Курсы криптовалют</h3>
+                <div class="rating-item">
+                    <span>OVN/USD:</span>
+                    <span id="ovnRate">0.021</span>
+                </div>
+                <div class="rating-item">
+                    <span>MEM/USD:</span>
+                    <span id="memRate">0.0035</span>
+                </div>
+                <div class="rating-item">
+                    <span>OVN/MEM:</span>
+                    <span id="ovnMemRate">6.0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Данные пользователя
+        let userData = {
+            balance: 0,
+            clicks: 0,
+            referrals: 0,
+            activeReferrals: 0,
+            earnedFromRefs: 0
+        };
+        
+        // Инициализация приложения
+        function init() {
+            loadUserData();
+            updateUI();
+            generateRating();
+        }
+        
+        // Загрузка данных (в реальном приложении с сервера)
+        function loadUserData() {
+            const savedData = localStorage.getItem('ovnUserData');
+            if (savedData) {
+                userData = JSON.parse(savedData);
+            }
+        }
+        
+        // Сохранение данных
+        function saveUserData() {
+            localStorage.setItem('ovnUserData', JSON.stringify(userData));
+        }
+        
+        // Обработка клика
+        function clickOVN() {
+            userData.balance += 0.001;
+            userData.clicks++;
+            updateUI();
+            saveUserData();
+        }
+        
+        // Копирование реферальной ссылки
+        function copyRefLink() {
+            navigator.clipboard.writeText(document.getElementById('refLink').innerText);
+            alert('Ссылка скопирована!');
+        }
+        
+        // Обновление интерфейса
+        function updateUI() {
+            document.getElementById('balance').textContent = userData.balance.toFixed(3) + ' OVN';
+            document.getElementById('totalRefs').textContent = userData.referrals;
+            document.getElementById('activeRefs').textContent = userData.activeReferrals;
+            document.getElementById('earnedRefs').textContent = userData.earnedFromRefs.toFixed(3) + ' OVN';
+        }
+        
+        // Генерация рейтингов
+        function generateRating() {
+            // В реальном приложении данные с сервера
+            const refRating = [
+                { name: 'Пользователь 1', count: 24 },
+                { name: 'Пользователь 2', count: 19 },
+                { name: 'Вы', count: userData.referrals }
+            ];
+            
+            const ovnRating = [
+                { name: 'Пользователь 1', balance: 42.56 },
+                { name: 'Пользователь 2', balance: 38.21 },
+                { name: 'Вы', balance: userData.balance }
+            ];
+            
+            let refHtml = '';
+            refRating.sort((a, b) => b.count - a.count).forEach(user => {
+                refHtml += `<div class="rating-item">
+                    <span>${user.name}</span>
+                    <span>${user.count} реф.</span>
+                </div>`;
+            });
+            
+            let ovnHtml = '';
+            ovnRating.sort((a, b) => b.balance - a.balance).forEach(user => {
+                ovnHtml += `<div class="rating-item">
+                    <span>${user.name}</span>
+                    <span>${user.balance.toFixed(3)} OVN</span>
+                </div>`;
+            });
+            
+            document.getElementById('refRating').innerHTML = refHtml;
+            document.getElementById('ovnRating').innerHTML = ovnHtml;
+        }
+        
+        // Переключение вкладок
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector(`.tab[onclick="openTab('${tabName}')"]`).classList.add('active');
+        }
+        
+        // Инициализация при загрузке
+        window.onload = init;
+        
+        // Интеграция с Telegram Web Apps
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+    </script>
+</body>
+</html>
